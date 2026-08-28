@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opportunity Tax Reset — Independent Calculator</title>
+  <meta name="description" content="Independent calculator for exploring the direct household effects of Opportunity's proposed Tax Reset.">
+  <style>
+    :root{
+      --bg:#f6f7f8;
+      --card:#ffffff;
+      --text:#1f2933;
+      --muted:#667085;
+      --border:#d8dee6;
+      --accent:#124e78;
+      --accent-2:#eaf2f7;
+      --good:#176b3a;
+      --bad:#a33a32;
+      --warn:#8a5a00;
+      --max:980px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:var(--accent)}
+    .wrap{width:min(var(--max),calc(100% - 32px));margin:0 auto}
+    header{padding:48px 0 24px}
+    h1{font-size:clamp(2rem,5vw,4rem);line-height:1.02;margin:0 0 12px}
+    h2{font-size:1.6rem;margin:0 0 12px}
+    h3{margin:0 0 8px}
+    p{margin:0 0 12px}
+    .lede{font-size:1.08rem;color:var(--muted);max-width:760px}
+    .pill{
+      display:inline-block;padding:6px 10px;border:1px solid var(--border);
+      border-radius:999px;background:white;color:var(--muted);font-size:.85rem;margin-bottom:14px
+    }
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:16px;
+      padding:20px;margin:18px 0;
+    }
+    .soft{background:var(--accent-2)}
+    .grid{display:grid;gap:14px}
+    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .metric{padding:14px;border:1px solid var(--border);border-radius:12px;background:#fff}
+    .metric small{display:block;color:var(--muted);margin-bottom:4px}
+    .metric strong{font-size:1.25rem}
+    label{display:block;font-size:.92rem;font-weight:600}
+    input,select{
+      width:100%;min-height:46px;margin-top:6px;padding:10px 12px;
+      border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text);
+      font:inherit;font-size:16px
+    }
+    button{
+      min-height:46px;border-radius:10px;border:1px solid var(--border);padding:10px 16px;
+      font:inherit;font-weight:700;cursor:pointer;background:#fff;color:var(--text)
+    }
+    button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+    button.ghost{background:#fff}
+    button.danger{color:var(--bad)}
+    .actions{display:flex;flex-wrap:wrap;gap:10px}
+    .person{padding:18px;border:1px solid var(--border);border-radius:14px;margin-top:14px}
+    .person-head,.row-head,.result-head{
+      display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap
+    }
+    .income-row,.land-row{
+      display:grid;grid-template-columns:1.6fr 1fr auto;gap:10px;align-items:end;margin-top:10px
+    }
+    .land-row{grid-template-columns:1.2fr .9fr 1fr auto}
+    .support-box{margin-top:14px}
+    .subtle{color:var(--muted);font-size:.9rem}
+    .tiny{color:var(--muted);font-size:.8rem}
+    .divider{height:1px;background:var(--border);margin:16px 0}
+    .hidden{display:none}
+    .big-result{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:6px 0}
+    .good{color:var(--good)}
+    .bad{color:var(--bad)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border)}
+    th{font-size:.9rem}
+    .scroll{overflow-x:auto}
+    footer{padding:24px 0 60px;color:var(--muted);font-size:.86rem}
+    .notice{border-left:4px solid var(--accent);padding:12px 14px;background:#fff;border-radius:8px}
+    .warning{border-left-color:#d49a1f}
+    .section-space{margin-top:34px}
+    @media (max-width:760px){
+      .grid-2,.grid-3{grid-template-columns:1fr}
+      .income-row,.land-row{grid-template-columns:1fr}
+      .wrap{width:min(100% - 20px,var(--max))}
+      header{padding-top:28px}
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <span class="pill">Independent calculator · August 2026 policy settings</span>
+    <h1>Would Opportunity’s Tax Reset make you better or worse off?</h1>
+    <p class="lede">Add each adult separately, include their income and current government payment, then enter the land your household owns. The calculator shows the direct arithmetic under the current tax system and Opportunity’s published proposal.</p>
+  </header>
+
+  <main class="wrap">
+    <section class="panel soft">
+      <div class="grid grid-3">
+        <div class="metric"><small>Citizen’s Income</small><strong>$19,400</strong><div class="tiny">per eligible adult, tax-free</div></div>
+        <div class="metric"><small>Urban Land Value Tax</small><strong>1.75%</strong><div class="tiny">of land value per year</div></div>
+        <div class="metric"><small>Rural Land Value Tax</small><strong>0.5%</strong><div class="tiny">for qualifying rural land</div></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="row-head">
+        <div>
+          <h2>1. People</h2>
+          <p class="subtle">Income and government support are separate. One person can have several income sources plus NZ Super, Student Allowance or another payment.</p>
+        </div>
+        <button id="addPerson" type="button">+ Add person</button>
+      </div>
+      <div id="people"></div>
+    </section>
+
+    <section class="panel">
+      <div class="row-head">
+        <div>
+          <h2>2. Land</h2>
+          <p class="subtle">Enter land value only, not total property value. Split mixed urban/rural holdings into separate rows.</p>
+        </div>
+        <button id="addLand" type="button">+ Add land portion</button>
+      </div>
+      <div id="lands"></div>
+    </section>
+
+    <div class="actions">
+      <button id="calculate" class="primary" type="button">Calculate better / worse off</button>
+      <button id="reset" class="ghost" type="button">Reset</button>
+    </div>
+    <p id="message" class="subtle" aria-live="polite"></p>
+
+    <section id="results" class="hidden section-space" aria-live="polite">
+      <div id="headline" class="panel soft"></div>
+      <div id="personResults"></div>
+      <div id="landResults" class="panel"></div>
+      <div id="whyResults" class="panel"></div>
+    </section>
+
+    <section class="section-space">
+      <h2>What behaviour could a Land Value Tax encourage?</h2>
+      <p class="lede">The tax is intended to do more than raise revenue. It changes the cost of holding valuable land.</p>
+
+      <div class="grid grid-2" style="margin-top:16px">
+        <div class="panel">
+          <h3>Potential benefits</h3>
+          <p>Less incentive to land-bank, more housing on valuable urban land, lower land prices over time, and less capital tied up purely in land appreciation.</p>
+          <p>Because the tax applies to land rather than the buildings on it, improving or adding buildings does not directly increase the tax simply because the improvement exists.</p>
+        </div>
+        <div class="panel">
+          <h3>Potential trade-offs</h3>
+          <p>Developers have a stronger incentive to maximise the number or value of dwellings on expensive sites. That can mean more housing — but it can also increase pressure toward smaller dwellings, cheaper builds, less private outdoor space, and loss of gardens or trees.</p>
+          <p>Housing quality therefore still depends on planning rules, building standards and what buyers will pay for.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Could landlords simply put the rent up?</h2>
+      <p>Possibly, at least partly. A Citizen’s Income gives renters more disposable income, which can increase what a tight rental market is able to absorb.</p>
+      <p>But landlords cannot automatically pass their entire Land Value Tax bill through to tenants. Market rents are constrained by supply, demand and competing rentals, not just one landlord’s costs.</p>
+      <div class="grid grid-2" style="margin-top:14px">
+        <div class="metric"><small>Citizen’s Income</small><strong>More renter purchasing power</strong><div class="tiny">Potential upward pressure on rents</div></div>
+        <div class="metric"><small>Land Value Tax</small><strong>More incentive to build</strong><div class="tiny">Potential downward pressure if supply increases</div></div>
+      </div>
+      <p class="notice warning" style="margin-top:14px"><strong>The calculator does not predict which effect dominates.</strong> Rent changes are an economic outcome, not a direct policy arithmetic result.</p>
+    </section>
+
+    <section class="section-space">
+      <h2>Land Value Tax vs Capital Gains Tax</h2>
+      <p class="subtle">Both can reduce the tax preference for property, but they operate very differently.</p>
+      <div class="scroll panel">
+        <table>
+          <thead>
+            <tr><th></th><th>Land Value Tax</th><th>Capital Gains Tax</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>What is taxed?</th><td>Value of the land</td><td>Increase in value of an asset</td></tr>
+            <tr><th>When?</th><td>Every year</td><td>Generally when a taxable gain is realised</td></tr>
+            <tr><th>$1m empty urban section</th><td>$17,500/year at 1.75%</td><td>Generally no CGT until a taxable disposal</td></tr>
+            <tr><th>Improve the property</th><td>Buildings/improvements are not directly taxed</td><td>Resulting gain may ultimately be taxable</td></tr>
+            <tr><th>Land banking</th><td>Creates an ongoing holding cost</td><td>Tax can often be deferred by continuing to hold</td></tr>
+            <tr><th>Encourages development</th><td>Directly</td><td>Less directly</td></tr>
+            <tr><th>Shares/business gains</th><td>No</td><td>Potentially, depending on design</td></tr>
+            <tr><th>Main idea</th><td>Change the incentive to hold land</td><td>Tax capital gains more consistently with other income</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="notice"><strong>Key distinction:</strong> a CGT primarily taxes the return you make from owning an asset. An LVT taxes the land you continue to hold.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Methodology and limitations</h2>
+      <p>This tool is independent and is not an official Opportunity calculator. It models direct household arithmetic only.</p>
+      <p>Current income tax uses New Zealand individual tax rates applying from 1 April 2025. Opportunity income tax is modelled at 28% to $50,000, 34% from $50,001 to $200,000, and 39% above $200,000.</p>
+      <p>The Citizen’s Income is modelled as $19,400 per eligible adult aged 18+. Land Value Tax is modelled at 1.75% for urban land and 0.5% for qualifying rural land.</p>
+      <p>NZ Super uses the published 2026 after-tax “M” rates. For testing, Jobseeker, Student Allowance, Supported Living Payment and Sole Parent Support can be entered as the actual current annual amount received after abatements. This avoids pretending to know every household-specific entitlement while the full benefit engine is still being developed.</p>
+      <p class="notice warning"><strong>Not modelled yet:</strong> Working for Families, Accommodation Supplement, disability supplements, ACC earners’ levy, KiwiSaver, student loan repayments, tax-credit interactions, precise Opportunity Super tax-adjustment rules for substantial other income, future rent/house-price changes, wages, interest rates, migration or behavioural responses.</p>
+
+      <h3 style="margin-top:20px">Primary sources</h3>
+      <p class="tiny">
+        Opportunity Tax Reset: <a href="https://www.opportunity.org.nz/tax-reset">opportunity.org.nz/tax-reset</a><br>
+        Current NZ individual tax rates: <a href="https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals">ird.govt.nz</a><br>
+        NZ Super rates: <a href="https://www.workandincome.govt.nz/eligibility/seniors/superannuation/how-much-you-can-get.html">workandincome.govt.nz</a><br>
+        Benefit rates: <a href="https://www.workandincome.govt.nz/products/benefit-rates/benefit-rates-april-2026.html">workandincome.govt.nz</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    Built as an independent public-interest calculator. Proposed policy may change before legislation.
+  </footer>
+
+  <template id="personTemplate">
+    <article class="person">
+      <div class="person-head">
+        <div>
+          <h3>Person</h3>
+          <p class="tiny">Add all taxable income sources separately.</p>
+        </div>
+        <button class="danger remove-person" type="button">Remove</button>
+      </div>
+
+      <div class="grid grid-2">
+        <label>Name / label
+          <input class="person-name" type="text" placeholder="e.g. Person 1">
+        </label>
+        <label>Age
+          <input class="person-age" type="number" min="0" max="120" value="40">
+        </label>
+      </div>
+
+      <div class="divider"></div>
+      <div class="row-head">
+        <div>
+          <strong>Taxable income</strong>
+          <div class="tiny">For sole traders, use taxable profit rather than turnover.</div>
+        </div>
+        <button class="add-income" type="button">+ Income source</button>
+      </div>
+      <div class="income-list"></div>
+
+      <div class="divider"></div>
+      <label>Government payment
+        <select class="support-type">
+          <option value="none">None</option>
+          <option value="super">NZ Super</option>
+          <option value="jobseeker">Jobseeker Support</option>
+          <option value="student">Student Allowance</option>
+          <option value="supported">Supported Living Payment</option>
+          <option value="soleparent">Sole Parent Support</option>
+          <option value="other">Other payment</option>
+        </select>
+      </label>
+      <div class="support-box"></div>
+    </article>
+  </template>
+
+  <template id="incomeTemplate">
+    <div class="income-row">
+      <label>Income type
+        <select class="income-type">
+          <option>Salary / wages</option>
+          <option>Shareholder-employee income</option>
+          <option>Sole trader / self-employed profit</option>
+          <option>Partnership income</option>
+          <option>Rental income</option>
+          <option>Investment income</option>
+          <option>Other taxable income</option>
+        </select>
+      </label>
+      <label>Annual amount
+        <input class="income-amount" type="number" min="0" step="100" placeholder="$">
+      </label>
+      <button class="remove-income" type="button">×</button>
+    </div>
+  </template>
+
+  <template id="landTemplate">
+    <div class="land-row">
+      <label>Label
+        <input class="land-label" type="text" placeholder="Home / bach / farm">
+      </label>
+      <label>Type
+        <select class="land-type">
+          <option value="urban">Urban — 1.75%</option>
+          <option value="rural">Rural — 0.5%</option>
+          <option value="exempt">Exempt — 0%</option>
+        </select>
+      </label>
+      <label>Land value
+        <input class="land-value" type="number" min="0" step="1000" placeholder="$">
+      </label>
+      <button class="remove-land" type="button">×</button>
+    </div>
+  </template>
+
+  <script>
+  (() => {
+    const $ = (s, el=document) => el.querySelector(s);
+    const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+    const peopleEl = $('#people');
+    const landsEl = $('#lands');
+    const resultsEl = $('#results');
+    const messageEl = $('#message');
+
+    const SUPER = {
+      singleAlone: {label:'Single — living alone', netWeekly:555.15},
+      singleSharing: {label:'Single — sharing', netWeekly:512.45},
+      partnered: {label:'Partnered — qualifying person', netWeekly:427.04}
+    };
+
+    const money = n => new Intl.NumberFormat('en-NZ',{
+      style:'currency', currency:'NZD', maximumFractionDigits:0
+    }).format(Number.isFinite(n) ? n : 0);
+
+    const num = el => {
+      const n = Number(el?.value ?? 0);
+      return Number.isFinite(n) && n > 0 ? n : 0;
+    };
+
+    function currentTax(x){
+      let t=0;
+      if(x<=15600) return x*.105;
+      t+=15600*.105;
+      if(x<=53500) return t+(x-15600)*.175;
+      t+=(53500-15600)*.175;
+      if(x<=78100) return t+(x-53500)*.30;
+      t+=(78100-53500)*.30;
+      if(x<=180000) return t+(x-78100)*.33;
+      t+=(180000-78100)*.33;
+      return t+(x-180000)*.39;
+    }
+
+    function oppTax(x){
+      if(x<=50000) return x*.28;
+      if(x<=200000) return 14000+(x-50000)*.34;
+      return 65000+(x-200000)*.39;
+    }
+
+    function addIncome(person, type='Salary / wages'){
+      const row = $('#incomeTemplate').content.firstElementChild.cloneNode(true);
+      $('.income-type', row).value = type;
+      $('.remove-income', row).addEventListener('click', () => row.remove());
+      $('.income-list', person).appendChild(row);
+    }
+
+    function renderSupport(person){
+      const type = $('.support-type', person).value;
+      const box = $('.support-box', person);
+      box.innerHTML = '';
+
+      if(type === 'none') return;
+
+      if(type === 'super'){
+        box.innerHTML = `
+          <label>NZ Super situation
+            <select class="super-status">
+              <option value="singleAlone">Single — living alone</option>
+              <option value="singleSharing">Single — sharing</option>
+              <option value="partnered">Partnered — qualifying person</option>
+            </select>
+          </label>
+          <p class="tiny">Uses the official 2026 net M rate. Opportunity is modelled as Citizen’s Income plus a top-up sufficient to preserve that payment.</p>`;
+        return;
+      }
+
+      box.innerHTML = `
+        <label>Current annual amount actually received
+          <input class="support-amount" type="number" min="0" step="100" placeholder="$ after current abatements">
+        </label>
+        <p class="tiny">Use the amount currently received after any income abatement. This keeps the test result grounded in your actual entitlement while the full benefit rules are still being built.</p>`;
+    }
+
+    function addPerson(label=''){
+      const person = $('#personTemplate').content.firstElementChild.cloneNode(true);
+      $('.person-name', person).value = label;
+      $('.remove-person', person).addEventListener('click', () => person.remove());
+      $('.add-income', person).addEventListener('click', () => addIncome(person));
+      $('.support-type', person).addEventListener('change', () => renderSupport(person));
+      addIncome(person);
+      peopleEl.appendChild(person);
+    }
+
+    function addLand(label='', type='urban'){
+      const row = $('#landTemplate').content.firstElementChild.cloneNode(true);
+      $('.land-label', row).value = label;
+      $('.land-type', row).value = type;
+      $('.remove-land', row).addEventListener('click', () => row.remove());
+      landsEl.appendChild(row);
+    }
+
+    function readSupport(person, age){
+      const type = $('.support-type', person).value;
+      const ci = age >= 18 ? 19400 : 0;
+
+      if(type === 'none'){
+        return {type, label:'None', current:0, ci, topUp:0, opportunity:ci};
+      }
+
+      if(type === 'super'){
+        const key = $('.super-status', person).value;
+        const current = SUPER[key].netWeekly * 52;
+        const topUp = Math.max(0, current - ci);
+        return {
+          type,
+          label:'NZ Super — ' + SUPER[key].label,
+          current,
+          ci,
+          topUp,
+          opportunity:ci + topUp
+        };
+      }
+
+      const current = num($('.support-amount', person));
+      const opportunity = Math.max(ci, current);
+      return {
+        type,
+        label: $('.support-type option:checked', person).textContent,
+        current,
+        ci,
+        topUp: Math.max(0, opportunity-ci),
+        opportunity
+      };
+    }
+
+    function readPerson(person, i){
+      const name = $('.person-name', person).value.trim() || `Person ${i+1}`;
+      const age = num($('.person-age', person));
+      const incomes = $$('.income-row', person).map(row => ({
+        type: $('.income-type', row).value,
+        amount: num($('.income-amount', row))
+      }));
+      const income = incomes.reduce((s,x)=>s+x.amount,0);
+      const support = readSupport(person, age);
+      const cTax = currentTax(income);
+      const oTax = oppTax(income);
+      const currentNet = income - cTax + support.current;
+      const opportunityNet = income - oTax + support.opportunity;
+      return {name,age,incomes,income,support,cTax,oTax,currentNet,opportunityNet,diff:opportunityNet-currentNet};
+    }
+
+    function calculate(){
+      const personNodes = $$('.person');
+      if(!personNodes.length){
+        messageEl.textContent = 'Add at least one person.';
+        return;
+      }
+
+      messageEl.textContent = '';
+      const people = personNodes.map(readPerson);
+
+      const lands = $$('.land-row').map(row=>{
+        const type = $('.land-type', row).value;
+        const value = num($('.land-value', row));
+        const rate = type==='urban' ? .0175 : type==='rural' ? .005 : 0;
+        return {
+          label: $('.land-label', row).value.trim() || 'Land',
+          type,value,rate,tax:value*rate
+        };
+      });
+
+      const currentTotal = people.reduce((s,p)=>s+p.currentNet,0);
+      const oppBeforeLVT = people.reduce((s,p)=>s+p.opportunityNet,0);
+      const lvt = lands.reduce((s,l)=>s+l.tax,0);
+      const oppAfterLVT = oppBeforeLVT-lvt;
+      const diff = oppAfterLVT-currentTotal;
+      const better = diff >= 0;
+
+      $('#headline').innerHTML = `
+        <p class="subtle">Estimated direct annual household impact</p>
+        <div class="big-result ${better?'good':'bad'}">${money(Math.abs(diff))} ${better?'better':'worse'} off</div>
+        <p><strong>${money(Math.abs(diff)/52)} ${better?'better':'worse'} off per week</strong></p>
+        <div class="grid grid-3" style="margin-top:16px">
+          <div class="metric"><small>Current estimated net</small><strong>${money(currentTotal)}</strong></div>
+          <div class="metric"><small>Opportunity before LVT</small><strong>${money(oppBeforeLVT)}</strong></div>
+          <div class="metric"><small>Opportunity after LVT</small><strong>${money(oppAfterLVT)}</strong></div>
+        </div>`;
+
+      $('#personResults').innerHTML = people.map(p=>{
+        const incomeLines = p.incomes.filter(x=>x.amount>0).map(x=>
+          `<div class="result-head"><span>${x.type}</span><strong>${money(x.amount)}</strong></div>`
+        ).join('') || `<div class="subtle">No private taxable income</div>`;
+
+        return `
+          <div class="panel">
+            <div class="result-head">
+              <div><h3>${p.name}</h3><div class="tiny">Age ${p.age}</div></div>
+              <strong class="${p.diff>=0?'good':'bad'}">${money(Math.abs(p.diff))} ${p.diff>=0?'better':'worse'} before LVT</strong>
+            </div>
+            <div class="grid grid-2" style="margin-top:16px">
+              <div>
+                <strong>Current system</strong>
+                <div style="margin-top:8px">${incomeLines}</div>
+                <div class="result-head"><span>Income tax</span><strong>−${money(p.cTax)}</strong></div>
+                ${p.support.type!=='none'?`<div class="result-head"><span>${p.support.label}</span><strong>+${money(p.support.current)}</strong></div>`:''}
+                <div class="divider"></div>
+                <div class="result-head"><span><strong>Net position</strong></span><strong>${money(p.currentNet)}</strong></div>
+              </div>
+              <div>
+                <strong>Opportunity</strong>
+                <div class="result-head" style="margin-top:8px"><span>Private taxable income</span><strong>${money(p.income)}</strong></div>
+                <div class="result-head"><span>Opportunity income tax</span><strong>−${money(p.oTax)}</strong></div>
+                <div class="result-head"><span>Citizen’s Income</span><strong>+${money(p.support.ci)}</strong></div>
+                ${p.support.topUp>0?`<div class="result-head"><span>Support / Super top-up</span><strong>+${money(p.support.topUp)}</strong></div>`:''}
+                <div class="divider"></div>
+                <div class="result-head"><span><strong>Net position</strong></span><strong>${money(p.opportunityNet)}</strong></div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+
+      $('#landResults').innerHTML = `
+        <div class="result-head">
+          <div><h3>Land Value Tax</h3><div class="tiny">Land value only</div></div>
+          <strong>−${money(lvt)} / year</strong>
+        </div>
+        <div style="margin-top:12px">
+          ${lands.length ? lands.map(l=>`
+            <div class="result-head">
+              <span>${l.label} — ${l.type} (${(l.rate*100).toFixed(l.rate===.005?1:2)}%)</span>
+              <span>${money(l.value)} → <strong>${money(l.tax)}</strong></span>
+            </div>`).join('') : '<p class="subtle">No land entered.</p>'}
+        </div>`;
+
+      const totalCI = people.reduce((s,p)=>s+p.support.ci,0);
+      const totalTopUp = people.reduce((s,p)=>s+p.support.topUp,0);
+      const currentTaxTotal = people.reduce((s,p)=>s+p.cTax,0);
+      const oppTaxTotal = people.reduce((s,p)=>s+p.oTax,0);
+      const taxDelta = currentTaxTotal-oppTaxTotal;
+
+      $('#whyResults').innerHTML = `
+        <h3>Why does the result change?</h3>
+        <div class="result-head"><span>Citizen’s Income</span><strong>+${money(totalCI)}</strong></div>
+        ${totalTopUp>0?`<div class="result-head"><span>Support / Super top-ups</span><strong>+${money(totalTopUp)}</strong></div>`:''}
+        <div class="result-head"><span>Change in private-income tax</span><strong>${taxDelta>=0?'+':'−'}${money(Math.abs(taxDelta))}</strong></div>
+        <div class="result-head"><span>Land Value Tax</span><strong>−${money(lvt)}</strong></div>
+        <div class="divider"></div>
+        <div class="result-head"><span><strong>Overall direct change</strong></span><strong class="${better?'good':'bad'}">${better?'+':'−'}${money(Math.abs(diff))}</strong></div>`;
+
+      resultsEl.classList.remove('hidden');
+      resultsEl.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    function reset(){
+      peopleEl.innerHTML='';
+      landsEl.innerHTML='';
+      resultsEl.classList.add('hidden');
+      messageEl.textContent='';
+      addPerson('Person 1');
+      addPerson('Person 2');
+      addLand('Urban land','urban');
+      addLand('Rural land','rural');
+    }
+
+    $('#addPerson').addEventListener('click',()=>addPerson());
+    $('#addLand').addEventListener('click',()=>addLand());
+    $('#calculate').addEventListener('click',calculate);
+    $('#reset').addEventListener('click',reset);
+
+    reset();
+  })();
+  </script>
+</body>
+</html>

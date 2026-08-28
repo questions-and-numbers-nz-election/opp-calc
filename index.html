@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Opportunity Tax Reset — Independent Calculator</title>
+  <title>Opportunity Tax Reset — Independent Scenario Calculator</title>
   <meta name="description" content="Independent calculator for exploring the direct household effects of Opportunity's proposed Tax Reset.">
   <style>
     :root{
@@ -99,8 +99,10 @@
 <body>
   <header class="wrap">
     <span class="pill">Independent calculator · August 2026 policy settings</span>
-    <h1>Would Opportunity’s Tax Reset make you better or worse off?</h1>
-    <p class="lede">Add each adult separately, include their income and current government payment, then enter the land your household owns. The calculator shows the direct arithmetic under the current tax system and Opportunity’s published proposal.</p>
+    <h1>What if we taxed income less — and land more?</h1>
+    <p class="lede">Opportunity’s Tax Reset proposes a very different way of sharing the tax burden: a Citizen’s Income for almost every adult, different income tax rates, and a tax on the value of land.</p>
+    <p class="lede"><strong>Curious what that would actually look like?</strong></p>
+    <p class="lede">Build a scenario for yourself, your household, someone you know, or a completely hypothetical case — and compare the numbers with the system we have now.</p>
   </header>
 
   <main class="wrap">
@@ -113,10 +115,18 @@
     </section>
 
     <section class="panel">
+      <h2>Build your scenario</h2>
+      <p class="subtle">Give it a label so you can keep track of what you are testing.</p>
+      <label>Scenario name
+        <input id="scenarioName" type="text" placeholder="e.g. Mum & Dad, Adult renter, South Island farmer">
+      </label>
+    </section>
+
+    <section class="panel">
       <div class="row-head">
         <div>
-          <h2>1. People</h2>
-          <p class="subtle">Income and government support are separate. One person can have several income sources plus NZ Super, Student Allowance or another payment.</p>
+          <h2>1. People in this scenario</h2>
+          <p class="subtle">Income and government support are separate. One person can have several income sources plus NZ Super, Student Allowance or another payment. Add people together only when they belong in the same household or share the land being tested.</p>
         </div>
         <button id="addPerson" type="button">+ Add person</button>
       </div>
@@ -127,7 +137,7 @@
       <div class="row-head">
         <div>
           <h2>2. Land</h2>
-          <p class="subtle">Enter land value only, not total property value. Split mixed urban/rural holdings into separate rows.</p>
+          <p class="subtle">Enter <strong>land value only</strong>, not total property value. Split mixed urban/rural holdings into separate rows.</p><p class="tiny">If you live in a retirement village under a Licence to Occupy, you generally do not own the underlying land, so do not enter it here. Unit-title or other ownership structures may be different.</p>
         </div>
         <button id="addLand" type="button">+ Add land portion</button>
       </div>
@@ -139,12 +149,16 @@
       <button id="reset" class="ghost" type="button">Reset</button>
     </div>
     <p id="message" class="subtle" aria-live="polite"></p>
+    <p class="notice" style="margin-top:14px"><strong>Your information stays private.</strong> This calculator runs entirely in your browser. Nothing you enter is stored, saved or sent anywhere.</p>
 
     <section id="results" class="hidden section-space" aria-live="polite">
       <div id="headline" class="panel soft"></div>
       <div id="personResults"></div>
       <div id="landResults" class="panel"></div>
       <div id="whyResults" class="panel"></div>
+      <div class="actions" style="margin:18px 0 4px">
+        <button id="newScenario" class="primary" type="button">Start a new scenario</button>
+      </div>
     </section>
 
     <section class="section-space">
@@ -201,7 +215,9 @@
 
     <section class="panel">
       <h2>Methodology and limitations</h2>
-      <p>This tool is independent and is not an official Opportunity calculator. It models direct household arithmetic only.</p>
+      <p class="subtle"><strong>Last updated: 29 August 2026</strong></p>
+      <p>This tool is independent and is not an official Opportunity calculator. It models direct arithmetic for one scenario at a time. Nothing entered into the calculator is stored or transmitted.</p>
+      <p>AI was used to assist with research, coding and development of this calculator. Policy settings and calculation assumptions are documented here so they can be independently checked.</p>
       <p>Current income tax uses New Zealand individual tax rates applying from 1 April 2025. Opportunity income tax is modelled at 28% to $50,000, 34% from $50,001 to $200,000, and 39% above $200,000.</p>
       <p>The Citizen’s Income is modelled as $19,400 per eligible adult aged 18+. Land Value Tax is modelled at 1.75% for urban land and 0.5% for qualifying rural land.</p>
       <p>NZ Super uses the published 2026 after-tax “M” rates. For testing, Jobseeker, Student Allowance, Supported Living Payment and Sole Parent Support can be entered as the actual current annual amount received after abatements. This avoids pretending to know every household-specific entitlement while the full benefit engine is still being developed.</p>
@@ -218,7 +234,8 @@
   </main>
 
   <footer class="wrap">
-    Built as an independent public-interest calculator. Proposed policy may change before legislation.
+    <p><strong>Built with AI and a lot of human curiosity. Calculations are based on current published policy and government sources as at 29 August 2026.</strong></p>
+    <p>Independent calculator. Proposed policy may change before legislation.</p>
   </footer>
 
   <template id="personTemplate">
@@ -244,7 +261,7 @@
       <div class="row-head">
         <div>
           <strong>Taxable income</strong>
-          <div class="tiny">For sole traders, use taxable profit rather than turnover.</div>
+          <div class="tiny"><strong>Own a business or farm?</strong> Enter the taxable income attributed to this person, not the business or farm's turnover. For a partnership, enter this person's share of taxable profit; for a company, enter their shareholder-employee salary/income.</div>
         </div>
         <button class="add-income" type="button">+ Income source</button>
       </div>
@@ -316,8 +333,9 @@
 
     const SUPER = {
       singleAlone: {label:'Single — living alone', netWeekly:555.15},
-      singleSharing: {label:'Single — sharing', netWeekly:512.45},
-      partnered: {label:'Partnered — qualifying person', netWeekly:427.04}
+      singleSharing: {label:'Single — sharing accommodation', netWeekly:512.45},
+      partneredBoth: {label:'Couple — both receive NZ Super', netWeekly:427.04},
+      partneredOne: {label:'Couple — only I receive NZ Super', netWeekly:427.04}
     };
 
     const money = n => new Intl.NumberFormat('en-NZ',{
@@ -367,8 +385,9 @@
           <label>NZ Super situation
             <select class="super-status">
               <option value="singleAlone">Single — living alone</option>
-              <option value="singleSharing">Single — sharing</option>
-              <option value="partnered">Partnered — qualifying person</option>
+              <option value="singleSharing">Single — sharing accommodation</option>
+              <option value="partneredBoth">Couple — both receive NZ Super</option>
+              <option value="partneredOne">Couple — only I receive NZ Super</option>
             </select>
           </label>
           <p class="tiny">Uses the official 2026 net M rate. Opportunity is modelled as Citizen’s Income plus a top-up sufficient to preserve that payment.</p>`;
@@ -477,8 +496,9 @@
       const diff = oppAfterLVT-currentTotal;
       const better = diff >= 0;
 
+      const scenarioName = ($('#scenarioName').value || '').trim() || 'This scenario';
       $('#headline').innerHTML = `
-        <p class="subtle">Estimated direct annual household impact</p>
+        <p class="subtle">${scenarioName} · estimated direct annual household impact</p>
         <div class="big-result ${better?'good':'bad'}">${money(Math.abs(diff))} ${better?'better':'worse'} off</div>
         <p><strong>${money(Math.abs(diff)/52)} ${better?'better':'worse'} off per week</strong></p>
         <div class="grid grid-3" style="margin-top:16px">
@@ -557,8 +577,9 @@
       landsEl.innerHTML='';
       resultsEl.classList.add('hidden');
       messageEl.textContent='';
+      const scenarioName = $('#scenarioName');
+      if (scenarioName) scenarioName.value = '';
       addPerson('Person 1');
-      addPerson('Person 2');
       addLand('Urban land','urban');
       addLand('Rural land','rural');
     }
@@ -567,6 +588,11 @@
     $('#addLand').addEventListener('click',()=>addLand());
     $('#calculate').addEventListener('click',calculate);
     $('#reset').addEventListener('click',reset);
+    $('#newScenario').addEventListener('click',()=>{
+      reset();
+      $('#scenarioName').focus();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
 
     reset();
   })();

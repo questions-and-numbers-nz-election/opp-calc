@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Opportunity Tax Reset — Independent Scenario Calculator</title>
+  <title>Opportunity Tax Reset - Independent Scenario Calculator</title>
   <meta name="description" content="Independent calculator for exploring the direct household effects of Opportunity's proposed Tax Reset.">
   <style>
     :root{
@@ -99,11 +99,9 @@
 <body>
   <header class="wrap">
     <span class="pill">Independent calculator · August 2026 policy settings</span>
-    <h1>What if we taxed income less — and land more?</h1>
-    <p class="lede">Opportunity’s Tax Reset proposes a very different way of sharing the tax burden: a Citizen’s Income for almost every adult, different income tax rates, and a tax on the value of land.</p>
-    <p class="lede"><strong>Curious what that would actually look like?</strong></p>
-    <p class="lede">Build a scenario for yourself, your household, someone you know, or a completely hypothetical case — and compare the numbers with the system we have now.</p>
-  </header>
+    <h1>What would Opportunity's Tax Reset actually mean?</h1>
+    <p class="lede"><strong>Opportunity proposes a different balance between income, government support and land taxation. Explore the numbers and compare different scenarios with the system we have now.</strong></p>
+</header>
 
   <main class="wrap">
     <section class="panel soft">
@@ -115,9 +113,21 @@
     </section>
 
     <section class="panel">
+      <h2>What's the idea behind the Tax Reset?</h2>
+      <p>For many New Zealanders, owning a home - and perhaps other property - has been one of the most reliable ways to build wealth. At the same time, getting onto the property ladder has become increasingly difficult for younger generations.</p>
+      <p>That raises some big questions:</p>
+      <p><strong>How can we make homes more affordable for younger generations? Is it healthy for so much of our wealth to be tied up in land? And could we share the tax burden differently without unfairly penalising people who have spent a lifetime building what they have?</strong></p>
+      <p>Opportunity's Tax Reset proposes one possible answer: a Citizen's Income for almost every adult, different income tax rates, and a tax on land.</p>
+      <p>Opportunity argues that this could make housing more affordable and encourage more investment outside property. <strong>Whether it would work, who would benefit, who would carry more of the cost, and whether that feels fair are much harder questions.</strong></p>
+      <p>This calculator lets you explore the numbers for yourself.</p>
+    </section>
+
+    <section class="panel">
       <h2>Build your scenario</h2>
       <p class="subtle">Give it a label so you can keep track of what you are testing.</p>
-      <label>Scenario name
+      <p class="notice"><strong>Your information stays private.</strong> This calculator runs entirely in your browser. Nothing you enter is stored, saved or sent anywhere.</p>
+
+<label>Scenario name
         <input id="scenarioName" type="text" placeholder="e.g. Mum & Dad, Adult renter, South Island farmer">
       </label>
     </section>
@@ -145,11 +155,10 @@
     </section>
 
     <div class="actions">
-      <button id="calculate" class="primary" type="button">Calculate better / worse off</button>
+      <button id="calculate" class="primary" type="button">Compare this scenario</button>
       <button id="reset" class="ghost" type="button">Reset</button>
     </div>
     <p id="message" class="subtle" aria-live="polite"></p>
-    <p class="notice" style="margin-top:14px"><strong>Your information stays private.</strong> This calculator runs entirely in your browser. Nothing you enter is stored, saved or sent anywhere.</p>
 
     <section id="results" class="hidden section-space" aria-live="polite">
       <div id="headline" class="panel soft"></div>
@@ -173,24 +182,12 @@
         </div>
         <div class="panel">
           <h3>Potential trade-offs</h3>
-          <p>Developers have a stronger incentive to maximise the number or value of dwellings on expensive sites. That can mean more housing — but it can also increase pressure toward smaller dwellings, cheaper builds, less private outdoor space, and loss of gardens or trees.</p>
+          <p>Developers have a stronger incentive to maximise the number or value of dwellings on expensive sites. That can mean more housing - but it can also increase pressure toward smaller dwellings, cheaper builds, less private outdoor space, and loss of gardens or trees.</p>
           <p>Housing quality therefore still depends on planning rules, building standards and what buyers will pay for.</p>
         </div>
       </div>
     </section>
-
-    <section class="panel">
-      <h2>Could landlords simply put the rent up?</h2>
-      <p>Possibly, at least partly. A Citizen’s Income gives renters more disposable income, which can increase what a tight rental market is able to absorb.</p>
-      <p>But landlords cannot automatically pass their entire Land Value Tax bill through to tenants. Market rents are constrained by supply, demand and competing rentals, not just one landlord’s costs.</p>
-      <div class="grid grid-2" style="margin-top:14px">
-        <div class="metric"><small>Citizen’s Income</small><strong>More renter purchasing power</strong><div class="tiny">Potential upward pressure on rents</div></div>
-        <div class="metric"><small>Land Value Tax</small><strong>More incentive to build</strong><div class="tiny">Potential downward pressure if supply increases</div></div>
-      </div>
-      <p class="notice warning" style="margin-top:14px"><strong>The calculator does not predict which effect dominates.</strong> Rent changes are an economic outcome, not a direct policy arithmetic result.</p>
-    </section>
-
-    <section class="section-space">
+<section class="section-space">
       <h2>Land Value Tax vs Capital Gains Tax</h2>
       <p class="subtle">Both can reduce the tax preference for property, but they operate very differently.</p>
       <div class="scroll panel">
@@ -213,6 +210,27 @@
       <p class="notice"><strong>Key distinction:</strong> a CGT primarily taxes the return you make from owning an asset. An LVT taxes the land you continue to hold.</p>
     </section>
 
+
+    <section class="section-space">
+      <h2>Some questions worth asking</h2>
+
+      <div class="panel">
+        <h3>Isn't this just a giant money-go-round?</h3>
+        <p>To an extent, yes. Under the Tax Reset, most adults would receive a Citizen's Income while many of those same people would also pay income tax - and some would pay Land Value Tax.</p>
+        <p>That might seem unnecessarily circular. The reason for making the payment universal is to avoid having to determine who is "poor enough" to receive it, and to remove the steep benefit abatements that can make earning more financially unrewarding.</p>
+        <p>For some people, much of the Citizen's Income will effectively be offset by the tax they pay. For others, it will represent a significant increase in disposable income.</p>
+        <p><strong>The important number isn't simply the $19,400 payment. It's the net result after the Citizen's Income, income tax and any Land Value Tax are all taken into account.</strong></p>
+      </div>
+
+      <div class="panel">
+        <h3>Would a Citizen's Income simplify the welfare system?</h3>
+        <p><strong>Potentially - but it wouldn't eliminate administration.</strong></p>
+        <p>Because almost every eligible adult receives the same Citizen's Income regardless of earnings, some of the income testing, benefit abatements and eligibility administration associated with the current system could disappear.</p>
+        <p>But the wider Tax Reset still requires administration. Some people would need additional support or top-ups, while Land Value Tax would require land valuations, classifications, exemptions and deferrals. Income tax would also continue to operate.</p>
+        <p><strong>The system may shift where the administrative complexity sits rather than simply making it disappear.</strong></p>
+      </div>
+    </section>
+
     <section class="panel">
       <h2>Methodology and limitations</h2>
       <p class="subtle"><strong>Last updated: 29 August 2026</strong></p>
@@ -221,6 +239,7 @@
       <p>Current income tax uses New Zealand individual tax rates applying from 1 April 2025. Opportunity income tax is modelled at 28% to $50,000, 34% from $50,001 to $200,000, and 39% above $200,000.</p>
       <p>The Citizen’s Income is modelled as $19,400 per eligible adult aged 18+. Land Value Tax is modelled at 1.75% for urban land and 0.5% for qualifying rural land.</p>
       <p>NZ Super uses the published 2026 after-tax “M” rates. For testing, Jobseeker, Student Allowance, Supported Living Payment and Sole Parent Support can be entered as the actual current annual amount received after abatements. This avoids pretending to know every household-specific entitlement while the full benefit engine is still being developed.</p>
+      <p class="notice warning"><strong>KiwiSaver 2.0 is not currently included in the calculation.</strong> Opportunity's wider Tax Reset also proposes changes to KiwiSaver, including progressively increasing employee and employer contributions to 6% each. Employee contributions could affect take-home pay, although that money remains the individual's retirement savings. The result shown here therefore models the direct effect of the Citizen's Income, income tax and Land Value Tax - not every component of the wider Tax Reset.</p>
       <p class="notice warning"><strong>Not modelled yet:</strong> Working for Families, Accommodation Supplement, disability supplements, ACC earners’ levy, KiwiSaver, student loan repayments, tax-credit interactions, precise Opportunity Super tax-adjustment rules for substantial other income, future rent/house-price changes, wages, interest rates, migration or behavioural responses.</p>
 
       <h3 style="margin-top:20px">Primary sources</h3>
@@ -310,9 +329,9 @@
       </label>
       <label>Type
         <select class="land-type">
-          <option value="urban">Urban — 1.75%</option>
-          <option value="rural">Rural — 0.5%</option>
-          <option value="exempt">Exempt — 0%</option>
+          <option value="urban">Urban - 1.75%</option>
+          <option value="rural">Rural - 0.5%</option>
+          <option value="exempt">Exempt - 0%</option>
         </select>
       </label>
       <label>Land value
@@ -332,10 +351,10 @@
     const messageEl = $('#message');
 
     const SUPER = {
-      singleAlone: {label:'Single — living alone', netWeekly:555.15},
-      singleSharing: {label:'Single — sharing accommodation', netWeekly:512.45},
-      partneredBoth: {label:'Couple — both receive NZ Super', netWeekly:427.04},
-      partneredOne: {label:'Couple — only I receive NZ Super', netWeekly:427.04}
+      singleAlone: {label:'Single - living alone', netWeekly:555.15},
+      singleSharing: {label:'Single - sharing accommodation', netWeekly:512.45},
+      partneredBoth: {label:'Couple - both receive NZ Super', netWeekly:427.04},
+      partneredOne: {label:'Couple - only I receive NZ Super', netWeekly:427.04}
     };
 
     const money = n => new Intl.NumberFormat('en-NZ',{
@@ -384,10 +403,10 @@
         box.innerHTML = `
           <label>NZ Super situation
             <select class="super-status">
-              <option value="singleAlone">Single — living alone</option>
-              <option value="singleSharing">Single — sharing accommodation</option>
-              <option value="partneredBoth">Couple — both receive NZ Super</option>
-              <option value="partneredOne">Couple — only I receive NZ Super</option>
+              <option value="singleAlone">Single - living alone</option>
+              <option value="singleSharing">Single - sharing accommodation</option>
+              <option value="partneredBoth">Couple - both receive NZ Super</option>
+              <option value="partneredOne">Couple - only I receive NZ Super</option>
             </select>
           </label>
           <p class="tiny">Uses the official 2026 net M rate. Opportunity is modelled as Citizen’s Income plus a top-up sufficient to preserve that payment.</p>`;
@@ -433,7 +452,7 @@
         const topUp = Math.max(0, current - ci);
         return {
           type,
-          label:'NZ Super — ' + SUPER[key].label,
+          label:'NZ Super - ' + SUPER[key].label,
           current,
           ci,
           topUp,
@@ -548,7 +567,7 @@
         <div style="margin-top:12px">
           ${lands.length ? lands.map(l=>`
             <div class="result-head">
-              <span>${l.label} — ${l.type} (${(l.rate*100).toFixed(l.rate===.005?1:2)}%)</span>
+              <span>${l.label} - ${l.type} (${(l.rate*100).toFixed(l.rate===.005?1:2)}%)</span>
               <span>${money(l.value)} → <strong>${money(l.tax)}</strong></span>
             </div>`).join('') : '<p class="subtle">No land entered.</p>'}
         </div>`;

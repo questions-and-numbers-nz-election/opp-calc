@@ -225,17 +225,11 @@
 
     <section class="panel">
       <h2>What's the idea behind the Tax Reset?</h2>
-      <p>For many New Zealanders, owning a home, commercial property or farm has been one of the most reliable ways to build wealth. At the same time, getting onto the property ladder has become increasingly difficult, while a significant share of New Zealand's wealth remains tied up in land.</p>
-
-      <p>Opportunity's Tax Reset asks whether we should tax that land wealth differently - putting an ongoing cost on holding valuable land, while returning money to almost every adult through a Citizen's Income.</p>
-
-      <p>The idea is that this could make housing more affordable, encourage land to be used more productively, shift investment into other parts of the economy, and change who carries the tax burden.</p>
-
-      <p><strong>But would it work? Who would benefit, who would pay more, and what other consequences might it create?</strong></p>
-
-      <p>This calculator lets you explore the numbers for yourself.</p>
-    
-  </section>
+      <p>For many New Zealanders, owning a home, commercial property or farm has been one of the most reliable ways to build security. At the same time, getting onto the property ladder has become increasingly difficult, while a significant share of New Zealand's wealth remains tied up in land.</p>
+      <p><strong>Could we share the tax burden differently without unfairly penalising people who have spent a lifetime building what they have?</strong></p>
+      <p>Opportunity's Tax Reset proposes one possible answer: a Citizen's Income for almost every adult, different income tax rates, and a tax on land.</p>
+      <p><strong>This calculator was designed to let you explore the numbers for yourself.</strong></p>
+    </section>
 
     <section class="section-space">
       <h2>Understanding the Tax Reset</h2>
@@ -343,7 +337,7 @@
       <p>The Citizen’s Income is modelled as $19,400 per eligible adult aged 18+. Land Value Tax is modelled at 1.75% for urban land and 0.5% for qualifying rural land. These are the fully implemented rates; Opportunity proposes phasing the Tax Reset in over 10 years.</p>
       <p>NZ Super uses the published 2026 after-tax “M” rates. For testing, Jobseeker, Student Allowance, Supported Living Payment and Sole Parent Support can be entered as the actual current annual amount received after abatements. This avoids pretending to know every household-specific entitlement while the full benefit engine is still being developed.</p>
       <p class="notice warning"><strong>KiwiSaver 2.0 is not currently included in the calculation.</strong> Opportunity's wider Tax Reset also proposes changes to KiwiSaver, including progressively increasing employee and employer contributions to 6% each. Employee contributions could affect take-home pay, although that money remains the individual's retirement savings. The result shown here therefore models the direct effect of the Citizen's Income, income tax and Land Value Tax - not every component of the wider Tax Reset.</p>
-      <p class="notice warning"><strong>Not modelled yet:</strong> Working for Families, Accommodation Supplement, disability supplements, ACC earners’ levy, KiwiSaver, student loan repayments, tax-credit interactions, precise Opportunity Super tax-adjustment rules for substantial other income, future rent/house-price changes, wages, interest rates, migration or behavioural responses.</p>
+      <p class="notice warning"><strong>Working for Families, tax credits and some supplementary support are not included in this calculation.</strong> These may be treated differently under the Tax Reset, so if you currently receive them, the result shown here may not reflect your full position. Also not modelled: Accommodation Supplement, disability supplements, ACC earners’ levy, KiwiSaver, student loan repayments, precise Opportunity Super tax-adjustment rules for substantial other income, future rent/house-price changes, wages, interest rates, migration or behavioural responses.</p>
 
       <h3 style="margin-top:20px">Primary sources</h3>
       <p class="tiny">
@@ -523,7 +517,7 @@
 
       box.innerHTML = `
         <label>Current annual amount actually received
-          <input class="support-amount" type="number" min="0" step="100" placeholder="$ after current abatements">
+          <input class="support-amount" type="number" min="0" step="100" placeholder="$ after tax">
         </label>
         <p class="tiny">Enter the amount you actually receive each year, after tax and any reductions because of other income.</p>`;
     }

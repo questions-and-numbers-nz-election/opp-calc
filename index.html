@@ -205,9 +205,8 @@
 
     <div class="actions">
       <button id="calculate" class="primary" type="button">Compare this scenario</button>
-        <button id="saveScenario" type="button">Save scenario</button>
         <button id="downloadScenario" type="button">Download results</button>
-        <button id="shareScenario" type="button">Share results</button>
+        <button id="shareScenario" type="button">Share scenario</button>
       <button id="reset" class="ghost" type="button">Reset</button>
     </div>
       <p id="saveMessage" class="tiny" aria-live="polite"></p>
@@ -769,32 +768,97 @@
     }
 
 
+    function makeShareUrl(){
+      const json = JSON.stringify(scenarioData());
+      const bytes = new TextEncoder().encode(json);
+      let binary = '';
+      bytes.forEach(b => binary += String.fromCharCode(b));
+      const encoded = btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+      const url = new URL(window.location.href);
+      url.search = '';
+      url.hash = 'scenario=' + encoded;
+      return url.toString();
+    }
+
     async function shareResults(){
       if(!lastResult){
-        $('#saveMessage').textContent = 'Compare the scenario first, then share the results.';
+        $('#saveMessage').textContent = 'Compare the scenario first, then share it.';
         return;
       }
+      const url = makeShareUrl();
       const r = lastResult;
-      const text = [
-        `${r.scenarioName} - Opportunity Tax Scenario`,
-        `Current estimated net: ${money(r.currentTotal)}`,
-        `Opportunity after LVT: ${money(r.oppAfterLVT)}`,
-        `Annual change: ${r.diff >= 0 ? '+' : '-'}${money(Math.abs(r.diff))}`,
-        '',
-        'Explore the independent Opportunity Tax Scenario Calculator.'
-      ].join('\n');
+      const text = `${r.scenarioName} - Opportunity Tax Scenario`;
       try{
         if(navigator.share){
-          await navigator.share({title:'Opportunity Tax Scenario', text});
-          $('#saveMessage').textContent = 'Results shared.';
+          await navigator.share({title:'Opportunity Tax Scenario', text, url});
+          $('#saveMessage').textContent = 'Scenario link shared.';
         } else if(navigator.clipboard){
-          await navigator.clipboard.writeText(text);
-          $('#saveMessage').textContent = 'Results copied to clipboard.';
+          await navigator.clipboard.writeText(url);
+          $('#saveMessage').textContent = 'Scenario link copied to clipboard.';
         } else {
-          $('#saveMessage').textContent = 'Sharing is not supported by this browser.';
+          $('#saveMessage').textContent = url;
         }
       }catch(e){
-        if(e.name !== 'AbortError') $('#saveMessage').textContent = 'Could not share these results.';
+        if(e.name !== 'AbortError') $('#saveMessage').textContent = 'Could not share this scenario.';
+      }
+    }
+
+    function loadSharedScenario(){
+      if(!window.location.hash.startsWith('#scenario=')) return;
+      try{
+        let encoded = window.location.hash.slice('#scenario='.length).replace(/-/g,'+').replace(/_/g,'/');
+        while(encoded.length % 4) encoded += '=';
+        const binary = atob(encoded);
+        const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+        const data = JSON.parse(new TextDecoder().decode(bytes));
+
+        reset();
+
+        $('#scenarioName').value = data.name || '';
+
+        const peopleWrap = $('#people');
+        peopleWrap.innerHTML = '';
+        (data.people || []).forEach((pd, i) => {
+          addPerson();
+          const person = $$('.person')[i];
+          $('.person-name', person).value = pd.name || '';
+          $('.person-age', person).value = pd.age || '';
+          const incomeWrap = $('.income-list', person);
+          incomeWrap.innerHTML = '';
+          (pd.incomes || []).forEach(inc => {
+            addIncomeRow(incomeWrap);
+            const row = $$('.income-row', person).at(-1);
+            $('.income-type', row).value = inc.type || 'salary';
+            $('.income-amount', row).value = inc.amount || '';
+          });
+          if(!(pd.incomes || []).length) addIncomeRow(incomeWrap);
+          $('.support-type', person).value = pd.supportType || 'none';
+          $('.support-type', person).dispatchEvent(new Event('change'));
+          const ss = $('.super-status', person);
+          if(ss && pd.superStatus) ss.value = pd.superStatus;
+          const sa = $('.support-amount', person);
+          if(sa && pd.supportAmount) sa.value = pd.supportAmount;
+        });
+        if(!(data.people || []).length) addPerson();
+
+        const landWrap = $('#lands');
+        landWrap.innerHTML = '';
+        (data.lands || []).forEach(ld => {
+          addLandRow(ld.type || 'urban');
+          const row = $$('.land-row').at(-1);
+          $('.land-label', row).value = ld.label || '';
+          $('.land-type', row).value = ld.type || 'urban';
+          $('.land-value', row).value = ld.value || '';
+        });
+        if(!(data.lands || []).length){
+          addLandRow('urban');
+          addLandRow('rural');
+        }
+
+        calculate();
+        $('#saveMessage').textContent = 'Shared scenario loaded from this link.';
+      }catch(e){
+        $('#saveMessage').textContent = 'This shared scenario link could not be loaded.';
       }
     }
 
@@ -817,7 +881,6 @@
     $('#addLand').addEventListener('click',()=>addLand());
     $('#calculate').addEventListener('click',calculate);
     $('#reset').addEventListener('click',reset);
-    $('#saveScenario').addEventListener('click', saveScenario);
     $('#shareScenario').addEventListener('click', shareResults);
     $('#downloadScenario').addEventListener('click', downloadResults);
     $('#newScenario').addEventListener('click',()=>{
@@ -828,6 +891,7 @@
 
     reset();
   })();
+      loadSharedScenario();
   </script>
 </body>
 </html>

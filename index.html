@@ -48,6 +48,25 @@
     .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
     .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
     .metric{padding:14px;border:1px solid var(--border);border-radius:12px;background:#fff}
+
+    .calc-badge{
+      display:flex;align-items:center;gap:12px;
+      padding:14px 16px;margin:0 0 14px;
+      border-radius:14px;
+      background:#f2c94c;
+      color:#1f2933;
+      font-weight:800;
+      font-size:1.05rem;
+      line-height:1.2;
+      box-shadow:0 1px 0 rgba(31,41,51,.06);
+    }
+    .calc-badge-icon{
+      width:34px;height:34px;flex:0 0 34px;
+      display:grid;place-items:center;
+      border-radius:9px;
+      background:rgba(255,255,255,.55);
+      font-size:1.25rem;
+    }
     .metric small{display:block;color:var(--muted);margin-bottom:4px}
     .metric strong{font-size:1.25rem}
     label{display:block;font-size:.92rem;font-weight:600}
@@ -105,11 +124,13 @@
 
   <main class="wrap">
     <section class="panel soft">
+      <div class="calc-badge">
+        <div class="calc-badge-icon" aria-hidden="true">⌗</div>
+        <div>Run your numbers in the calculator below.</div>
+      </div>
       <div class="grid grid-3">
-            <p class="lede"><strong>Run your numbers in the calculator below.</strong></p>
-
-<div class="metric"><small>Citizen’s Income</small><strong>$19,400</strong><div class="tiny">per eligible adult, tax-free</div></div>
-        <div class="metric"><small>Urban Land Value Tax</small><strong>1.75%</strong><div class="tiny">of land value per year</div></div>
+        <div class="metric"><small>Citizen’s Income</small><strong>$19,400</strong><div class="tiny">per eligible adult, tax-free</div></div>
+        <div class="metric"><small>Residential / commercial Land Value Tax</small><strong>1.75%</strong><div class="tiny">of land value per year</div></div>
         <div class="metric"><small>Rural Land Value Tax</small><strong>0.5%</strong><div class="tiny">for qualifying rural land</div></div>
       </div>
     </section>

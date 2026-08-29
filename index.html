@@ -205,8 +205,12 @@
 
     <div class="actions">
       <button id="calculate" class="primary" type="button">Compare this scenario</button>
+        <button id="saveScenario" type="button">Save scenario</button>
+        <button id="downloadScenario" type="button">Download results</button>
+        <button id="shareScenario" type="button">Share results</button>
       <button id="reset" class="ghost" type="button">Reset</button>
     </div>
+      <p id="saveMessage" class="tiny" aria-live="polite"></p>
     <p id="message" class="subtle" aria-live="polite"></p>
 
     <section id="results" class="hidden section-space" aria-live="polite">
@@ -215,11 +219,8 @@
       <div id="landResults" class="panel"></div>
       <div id="whyResults" class="panel"></div>
       <div class="actions" style="margin:18px 0 4px">
-        <button id="saveScenario" type="button">Save scenario</button>
-        <button id="downloadScenario" type="button">Download results</button>
         <button id="newScenario" class="primary" type="button">Start a new scenario</button>
       </div>
-      <p id="saveMessage" class="tiny" aria-live="polite"></p>
     </section>
 
     <section class="panel">
@@ -767,6 +768,36 @@
       $('#saveMessage').textContent = 'Results downloaded.';
     }
 
+
+    async function shareResults(){
+      if(!lastResult){
+        $('#saveMessage').textContent = 'Compare the scenario first, then share the results.';
+        return;
+      }
+      const r = lastResult;
+      const text = [
+        `${r.scenarioName} - Opportunity Tax Scenario`,
+        `Current estimated net: ${money(r.currentTotal)}`,
+        `Opportunity after LVT: ${money(r.oppAfterLVT)}`,
+        `Annual change: ${r.diff >= 0 ? '+' : '-'}${money(Math.abs(r.diff))}`,
+        '',
+        'Explore the independent Opportunity Tax Scenario Calculator.'
+      ].join('\n');
+      try{
+        if(navigator.share){
+          await navigator.share({title:'Opportunity Tax Scenario', text});
+          $('#saveMessage').textContent = 'Results shared.';
+        } else if(navigator.clipboard){
+          await navigator.clipboard.writeText(text);
+          $('#saveMessage').textContent = 'Results copied to clipboard.';
+        } else {
+          $('#saveMessage').textContent = 'Sharing is not supported by this browser.';
+        }
+      }catch(e){
+        if(e.name !== 'AbortError') $('#saveMessage').textContent = 'Could not share these results.';
+      }
+    }
+
     function reset(){
       peopleEl.innerHTML='';
       landsEl.innerHTML='';
@@ -787,6 +818,7 @@
     $('#calculate').addEventListener('click',calculate);
     $('#reset').addEventListener('click',reset);
     $('#saveScenario').addEventListener('click', saveScenario);
+    $('#shareScenario').addEventListener('click', shareResults);
     $('#downloadScenario').addEventListener('click', downloadResults);
     $('#newScenario').addEventListener('click',()=>{
       reset();

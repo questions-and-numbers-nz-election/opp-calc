@@ -215,8 +215,11 @@
       <div id="landResults" class="panel"></div>
       <div id="whyResults" class="panel"></div>
       <div class="actions" style="margin:18px 0 4px">
+        <button id="saveScenario" type="button">Save scenario</button>
+        <button id="downloadScenario" type="button">Download results</button>
         <button id="newScenario" class="primary" type="button">Start a new scenario</button>
       </div>
+      <p id="saveMessage" class="tiny" aria-live="polite"></p>
     </section>
 
     <section class="panel">
@@ -451,6 +454,7 @@
     const landsEl = $('#lands');
     const resultsEl = $('#results');
     const messageEl = $('#message');
+    let lastResult = null;
 
     const SUPER = {
       singleAlone: {label:'Single - living alone', netWeekly:555.15},
@@ -618,6 +622,7 @@
       const better = diff >= 0;
 
       const scenarioName = ($('#scenarioName').value || '').trim() || 'This scenario';
+      lastResult = {scenarioName, people, lands, currentTotal, oppBeforeLVT, lvt, oppAfterLVT, diff};
       $('#headline').innerHTML = `
         <p class="subtle">${scenarioName} · estimated direct annual household impact</p>
         <div class="big-result ${better?'good':'bad'}">${money(Math.abs(diff))} ${better?'better':'worse'} off</div>
@@ -693,11 +698,83 @@
       resultsEl.scrollIntoView({behavior:'smooth',block:'start'});
     }
 
+
+    function scenarioData(){
+      return {
+        name: ($('#scenarioName').value || '').trim(),
+        people: $$('.person').map((person, i) => ({
+          name: $('.person-name', person).value,
+          age: $('.person-age', person).value,
+          incomes: $$('.income-row', person).map(row => ({
+            type: $('.income-type', row).value,
+            amount: $('.income-amount', row).value
+          })),
+          supportType: $('.support-type', person).value,
+          superStatus: $('.super-status', person)?.value || '',
+          supportAmount: $('.support-amount', person)?.value || ''
+        })),
+        lands: $$('.land-row').map(row => ({
+          label: $('.land-label', row).value,
+          type: $('.land-type', row).value,
+          value: $('.land-value', row).value
+        }))
+      };
+    }
+
+    function saveScenario(){
+      try{
+        localStorage.setItem('opportunityTaxScenario', JSON.stringify(scenarioData()));
+        $('#saveMessage').textContent = 'Scenario saved on this device.';
+      }catch(e){
+        $('#saveMessage').textContent = 'This browser could not save the scenario.';
+      }
+    }
+
+    function downloadResults(){
+      if(!lastResult){
+        $('#saveMessage').textContent = 'Compare the scenario first, then download the results.';
+        return;
+      }
+      const r = lastResult;
+      const lines = [
+        r.scenarioName,
+        'Opportunity Tax Scenario Calculator - August 2026',
+        '',
+        `Current estimated net: ${money(r.currentTotal)}`,
+        `Opportunity before LVT: ${money(r.oppBeforeLVT)}`,
+        `Land Value Tax: -${money(r.lvt)}`,
+        `Opportunity after LVT: ${money(r.oppAfterLVT)}`,
+        `Annual change: ${r.diff >= 0 ? '+' : '-'}${money(Math.abs(r.diff))}`,
+        '',
+        'People:',
+        ...r.people.map(x => `${x.name}: taxable income ${money(x.income)}, Citizen's Income ${money(x.support.ci)}, direct change before LVT ${x.diff >= 0 ? '+' : '-'}${money(Math.abs(x.diff))}`),
+        '',
+        'Land:',
+        ...(r.lands.length ? r.lands.map(x => `${x.label}: ${money(x.value)} land value, LVT ${money(x.tax)}`) : ['No land entered.']),
+        '',
+        'This is an indicative comparison based on the calculator assumptions, not financial or tax advice.'
+      ];
+      const blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const safeName = (r.scenarioName || 'scenario').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase();
+      a.href = url;
+      a.download = `${safeName || 'scenario'}-tax-reset-results.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      $('#saveMessage').textContent = 'Results downloaded.';
+    }
+
     function reset(){
       peopleEl.innerHTML='';
       landsEl.innerHTML='';
       resultsEl.classList.add('hidden');
       messageEl.textContent='';
+      lastResult = null;
+      const saveMessage = $('#saveMessage');
+      if (saveMessage) saveMessage.textContent = '';
       const scenarioName = $('#scenarioName');
       if (scenarioName) scenarioName.value = '';
       addPerson('Person 1');
@@ -709,6 +786,8 @@
     $('#addLand').addEventListener('click',()=>addLand());
     $('#calculate').addEventListener('click',calculate);
     $('#reset').addEventListener('click',reset);
+    $('#saveScenario').addEventListener('click', saveScenario);
+    $('#downloadScenario').addEventListener('click', downloadResults);
     $('#newScenario').addEventListener('click',()=>{
       reset();
       $('#scenarioName').focus();

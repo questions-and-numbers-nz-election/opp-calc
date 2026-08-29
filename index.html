@@ -147,8 +147,10 @@
       <div class="row-head">
         <div>
           <h2>2. Land</h2>
-          <p class="subtle">Enter <strong>land value only</strong>, not total property value. Split mixed urban/rural holdings into separate rows.</p>
-          <p class="notice warning"><strong>This calculator uses the fully implemented Land Value Tax rates.</strong> Opportunity proposes phasing the Tax Reset in over 10 years, with Land Value Tax increasing gradually rather than beginning immediately at the full 1.75% urban / 0.5% rural rates.</p>
+          <p class="subtle">Enter <strong>land value only</strong>, not total property value. Split mixed residential/commercial and rural holdings into separate rows.</p>
+          <p class="notice warning"><strong>This calculator uses the fully implemented Land Value Tax rates.</strong> Opportunity proposes phasing the Tax Reset in over 10 years, with Land Value Tax increasing gradually rather than beginning immediately at the full 1.75% residential/commercial / 0.5% rural rates.</p>
+          <p class="tiny"><strong>Farm and rural land:</strong> Qualifying rural land is taxed at the lower 0.5% rate. Opportunity also proposes deferrals for farmers during difficult weather or economic seasons.</p>
+          <p class="tiny"><strong>Exempt land:</strong> Opportunity says privately owned conservation land would be exempt from Land Value Tax.</p>
           <p class="tiny">If you live in a retirement village under a Licence to Occupy, you generally do not own the underlying land, so do not enter it here. Unit-title or other ownership structures may be different.</p>
         </div>
         <button id="addLand" type="button">+ Add land portion</button>
@@ -367,7 +369,7 @@
       </label>
       <label>Type
         <select class="land-type">
-          <option value="urban">Urban - 1.75%</option>
+          <option value="urban">Residential / commercial - 1.75%</option>
           <option value="rural">Rural - 0.5%</option>
           <option value="exempt">Exempt - 0%</option>
         </select>

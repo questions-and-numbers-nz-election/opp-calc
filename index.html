@@ -113,6 +113,36 @@
       .wrap{width:min(100% - 20px,var(--max))}
       header{padding-top:28px}
     }
+  
+    .table-scroll{
+      width:100%;
+      overflow:visible;
+    }
+    @media (max-width:640px){
+      .table-scroll table{
+        width:100%;
+        table-layout:fixed;
+        font-size:.82rem;
+      }
+      .table-scroll th,
+      .table-scroll td{
+        padding:8px 6px;
+        white-space:normal;
+        overflow-wrap:anywhere;
+        vertical-align:top;
+      }
+      .table-scroll th:first-child,
+      .table-scroll td:first-child{
+        width:28%;
+      }
+      .table-scroll th:nth-child(2),
+      .table-scroll td:nth-child(2),
+      .table-scroll th:nth-child(3),
+      .table-scroll td:nth-child(3){
+        width:36%;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -191,13 +221,17 @@
 
     <section class="panel">
       <h2>What's the idea behind the Tax Reset?</h2>
-      <p>For many New Zealanders, owning a home, commercial property or farm, has been one of the most reliable ways to build wealth. At the same time, getting onto the property ladder has become increasingly difficult for younger generations.</p>
-      <p>That raises some big questions:</p>
-      <p><strong>How can we make homes more affordable for younger generations? Is it healthy for so much of our wealth to be tied up in land? And could we share the tax burden differently without unfairly penalising people who have spent a lifetime building what they have?</strong></p>
-      <p>Opportunity's Tax Reset proposes one possible answer: a Citizen's Income for almost every adult, different income tax rates, and a tax on land.</p>
-      <p>Opportunity argues that this could make housing more affordable and encourage more investment outside property. <strong>Whether it would work, who would benefit, who would carry more of the cost, and whether that feels fair are much harder questions.</strong></p>
+      <p>For many New Zealanders, owning a home, commercial property or farm has been one of the most reliable ways to build wealth. At the same time, getting onto the property ladder has become increasingly difficult, while a significant share of New Zealand's wealth remains tied up in land.</p>
+
+      <p>Opportunity's Tax Reset asks whether we should tax that land wealth differently - putting an ongoing cost on holding valuable land, while returning money to almost every adult through a Citizen's Income.</p>
+
+      <p>The idea is that this could make housing more affordable, encourage land to be used more productively, shift investment into other parts of the economy, and change who carries the tax burden.</p>
+
+      <p><strong>But would it work? Who would benefit, who would pay more, and what other consequences might it create?</strong></p>
+
       <p>This calculator lets you explore the numbers for yourself.</p>
-    </section>
+    
+  </section>
 
     <section class="section-space">
       <h2>Understanding the Tax Reset</h2>
@@ -255,7 +289,8 @@
         <h3>How is Land Value Tax different from Capital Gains Tax?</h3>
         <p>Both can reduce the tax preference for property, but they operate very differently.</p>
         <div class="table-wrap">
-          <table>
+          <div class="table-scroll">
+<table>
             <thead><tr><th></th><th>Land Value Tax</th><th>Capital Gains Tax</th></tr></thead>
             <tbody>
               <tr><td>What is taxed?</td><td>Value of the land</td><td>Increase in value of an asset</td></tr>
@@ -268,6 +303,7 @@
               <tr><td>Main idea</td><td>Change the incentive to hold land</td><td>Tax capital gains more consistently with other income</td></tr>
             </tbody>
           </table>
+</div>
         </div>
         <p><strong>Key distinction:</strong> a CGT primarily taxes the return you make from owning an asset. An LVT taxes the land you continue to hold.</p>
       </div>

@@ -385,7 +385,8 @@
       <div class="row-head">
         <div>
           <strong>Taxable income</strong>
-          <div class="tiny"><strong>Own a business or farm?</strong> Enter the taxable income attributed to this person, not the business or farm's turnover. For a partnership, enter this person's share of taxable profit; for a company, enter their shareholder-employee salary/income.</div>
+                <p class="notice"><strong>Income = before tax. Government payments = after tax.</strong></p>
+<div class="tiny"><strong>Own a business or farm?</strong> Enter the taxable income attributed to this person before income tax, not the business or farm's turnover. For a partnership, enter this person's share of taxable profit; for a company, enter their shareholder-employee salary/income.</div>
         </div>
         <button class="add-income" type="button">+ Income source</button>
       </div>
@@ -411,13 +412,13 @@
     <div class="income-row">
       <label>Income type
         <select class="income-type">
-          <option>Salary / wages</option>
-          <option>Shareholder-employee income</option>
-          <option>Sole trader / self-employed profit</option>
-          <option>Partnership income</option>
-          <option>Rental income</option>
-          <option>Investment income</option>
-          <option>Other taxable income</option>
+          <option>Salary / wages (before tax)</option>
+          <option>Shareholder-employee income (before tax)</option>
+          <option>Sole trader / self-employed taxable profit</option>
+          <option>Partnership taxable income</option>
+          <option>Rental taxable income</option>
+          <option>Investment taxable income</option>
+          <option>Other taxable income (before tax)</option>
         </select>
       </label>
       <label>Annual amount
@@ -523,7 +524,7 @@
         <label>Current annual amount actually received
           <input class="support-amount" type="number" min="0" step="100" placeholder="$ after current abatements">
         </label>
-        <p class="tiny">Use the amount currently received after any income abatement. This keeps the test result grounded in your actual entitlement while the full benefit rules are still being built.</p>`;
+        <p class="tiny">Enter the amount you actually receive each year, after tax and any reductions because of other income.</p>`;
     }
 
     function addPerson(label=''){
